@@ -8,7 +8,7 @@ class Contact {
 
 class UI {
   static displayContacts() {
-    const StoreDContacts = [
+    const StoredContacts = [
       {
         name: "Jack Ryan",
         company: "CIA",
@@ -20,8 +20,24 @@ class UI {
         phone: "610-613-8734"
       }
     ];
-    const contacts = StoreDContacts;
+    const contacts = StoredContacts;
 
-    contacts.forEach(contact => UI.addContactToList());
+    contacts.forEach(contact => UI.addContactToList(contact));
+  }
+
+  static addContactToList(contact) {
+    const list = document.querySelector("#list-app-table");
+
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+      <td>${contact.name}</td>
+      <td>${contact.company}</td>
+      <td>${contact.phone}</td>
+      <td><a href="#" class="btn btn-danger btn-sm delete">X</a></td>
+      `;
+    list.appendChild(row);
   }
 }
+
+document.addEventListener("DOMContentLoaded", UI.displayContacts);
