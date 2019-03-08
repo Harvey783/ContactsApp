@@ -21,13 +21,11 @@ class UI {
       }
     ];
     const contacts = StoredContacts;
-
     contacts.forEach(contact => UI.addContactToList(contact));
   }
 
   static addContactToList(contact) {
     const list = document.querySelector("#contact-list");
-
     const row = document.createElement("tr");
 
     row.innerHTML = `
@@ -43,6 +41,17 @@ class UI {
     if (target.classList.contains("delete")) {
       target.parentElement.parentElement.remove();
     }
+  }
+
+  static showAlert(message, className) {
+    const div = document.createElement("div");
+    div.className = `alert alert-${className}`;
+    div.appendChild(document.createTextNode(message));
+    const container = document.querySelector(".container");
+    const form = document.querySelector("#contact-form");
+    container.insertBefore(div, form);
+    // Lasts three seconds
+    setTimeout(() => document.querySelector(".alert").remove(), 3000);
   }
 
   // Clear fields after submit
@@ -63,12 +72,18 @@ document.querySelector("#contact-form").addEventListener("submit", e => {
   const name = document.querySelector("#name").value;
   const company = document.querySelector("#company").value;
   const phone = document.querySelector("#phone").value;
-  //Instantiate a contact
-  const contact = new Contact(name, company, phone);
-  // Add contact to UI
-  UI.addContactToList(contact);
-  // Clear fields
-  UI.clearFields();
+
+  //Validate
+  if (name === "" || company === "" || phone === "") {
+    UI.showAlert("Fill in all fields", "danger");
+  } else {
+    //Instantiate a contact
+    const contact = new Contact(name, company, phone);
+    // Add contact to UI
+    UI.addContactToList(contact);
+    // Clear fields
+    UI.clearFields();
+  }
 });
 
 // Delete contact event listener
