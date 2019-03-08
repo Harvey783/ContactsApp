@@ -22,13 +22,33 @@
         List
         <span class="text-primary">App</span>
       </h1>
-      <form id="book-form">
+      <form id="list-app-form">
         <div class="form-group">
-          <label for="title">Title</label>
-          <input type="text" id="title" class="form-control" />
+          <label for="field-1">Field-1</label>
+          <input type="text" id="field-1" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label for="field-2">Field-2</label>
+          <input type="text" id="field-2" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label for="field-3">Field-3</label>
+          <input type="text" id="field-3" class="form-control" />
         </div>
         <input type="submit" value="Add" class="btn btn-primary btn-block" />
       </form>
+      <table class="table table-striped mt-5">
+        <thead>
+          <tr>
+            <th>Field-1</th>
+            <th>Field-2</th>
+            <th>Field-3</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="list-app-table"></tbody>
+      </table>
     </div>
+    <script src="app.js"></script>
   </body>
 </html>
