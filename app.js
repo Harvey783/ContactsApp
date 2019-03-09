@@ -8,19 +8,7 @@ class Contact {
 
 class UI {
   static displayContacts() {
-    const StoredContacts = [
-      {
-        name: "Jack Ryan",
-        company: "CIA",
-        phone: "867-5309"
-      },
-      {
-        name: "Sharon Harvey",
-        company: "Conner & Webber",
-        phone: "610-613-8734"
-      }
-    ];
-    const contacts = StoredContacts;
+    const contacts = Store.getContacts();
     contacts.forEach(contact => UI.addContactToList(contact));
   }
 
@@ -62,6 +50,35 @@ class UI {
   }
 }
 
+class Store {
+  static getContacts() {
+    let contacts;
+    if (localStorage.getItem("contacts") === null) {
+      contacts = [];
+    } else {
+      contacts = JSON.parse(localStorage.getItem("contacts"));
+    }
+    return contacts;
+  }
+
+  static addContact(contact) {
+    const contacts = Store.getContacts();
+    contacts.push(contact);
+    localStorage.setItem("contacts", JSON.stringify(contacts));
+  }
+
+  static removeContact(phone) {
+    const contacts = Store.getContacts();
+
+    contacts.forEach((contact, index) => {
+      if (contact.phone === phone) {
+        contacts.splice(index, 1);
+      }
+    });
+    localStorage.setItem("contacts", JSON.stringify(contacts));
+  }
+}
+
 // Display contacts
 document.addEventListener("DOMContentLoaded", UI.displayContacts);
 // Add a contact
@@ -81,6 +98,10 @@ document.querySelector("#contact-form").addEventListener("submit", e => {
     const contact = new Contact(name, company, phone);
     // Add contact to UI
     UI.addContactToList(contact);
+    // Add contact to store
+    Store.addContact(contact);
+    // Success message
+    UI.showAlert("Contact Added", "success");
     // Clear fields
     UI.clearFields();
   }
@@ -88,5 +109,10 @@ document.querySelector("#contact-form").addEventListener("submit", e => {
 
 // Delete contact event listener
 document.querySelector("#contact-list").addEventListener("click", e => {
+  // Remove from UI
   UI.deleteContact(e.target);
+  // Remove from store
+  Store.removeContact(
+    e.target.parentElement.previousElementSibling.textContent
+  );
 });
